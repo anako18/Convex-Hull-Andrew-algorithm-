@@ -1,0 +1,9 @@
+c:\users\настя\documents\visual studio 2015\Projects\CG_ind\bin\Debug\CG_ind.exe.config
+c:\users\настя\documents\visual studio 2015\Projects\CG_ind\bin\Debug\CG_ind.exe
+c:\users\настя\documents\visual studio 2015\Projects\CG_ind\bin\Debug\CG_ind.pdb
+c:\users\настя\documents\visual studio 2015\Projects\CG_ind\obj\Debug\CG_ind.csprojResolveAssemblyReference.cache
+c:\users\настя\documents\visual studio 2015\Projects\CG_ind\obj\Debug\CG_ind.Properties.Resources.resources
+c:\users\настя\documents\visual studio 2015\Projects\CG_ind\obj\Debug\CG_ind.csproj.GenerateResource.Cache
+c:\users\настя\documents\visual studio 2015\Projects\CG_ind\obj\Debug\CG_ind.exe
+c:\users\настя\documents\visual studio 2015\Projects\CG_ind\obj\Debug\CG_ind.pdb
+c:\users\настя\documents\visual studio 2015\Projects\CG_ind\obj\Debug\CG_ind.Form1.resources
