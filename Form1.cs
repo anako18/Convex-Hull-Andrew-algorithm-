@@ -14,11 +14,11 @@ namespace CG_ind
     public partial class Form1 : Form
     {
 
-        public List<Point> points;
+        public LinkedList<Point> points;
 
-        public List<Point> above;
+        public LinkedList<Point> above;
 
-        public List<Point> below;
+        public LinkedList<Point> below;
 
         Graphics g;
 
@@ -39,9 +39,9 @@ namespace CG_ind
             Bitmap bmp = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             pictureBox1.Image = bmp;
             g = Graphics.FromImage(bmp);
-            points = new List<Point>();
-            above = new List<Point>();
-            below = new List<Point>();
+            points = new LinkedList<Point>();
+            above = new LinkedList<Point>();
+            below = new LinkedList<Point>();
         }
 
         private void clear_button_Click(object sender, EventArgs e)
@@ -51,6 +51,7 @@ namespace CG_ind
             above.Clear();
             below.Clear();
             pen.Color = Color.Black;
+            listBox1.Items.Clear();
             pictureBox1.Refresh();
         }
 
@@ -66,29 +67,30 @@ namespace CG_ind
         {
             if (points.Count < 3)
                 return;
-            points.Sort(new Sort()); //first is left border, last is right border
-            above.Add(points[0]);
-            above.Add(points[1]);
+            //points.Sort(new Sort()); //first is left border, last is right border
+            var sorted_points = points.OrderBy(p => p.X).ThenBy(p => p.Y);
+            above.AddLast(sorted_points.ElementAt(0));
+            above.AddLast(sorted_points.ElementAt(1));
             for (int i = 2; i<points.Count; i++)
             {
-                above.Add(points[i]);
-                while (above.Count > 2 && cww(above[above.Count - 3], above[above.Count - 2], above[above.Count - 1]) <= 0)
+                above.AddLast(sorted_points.ElementAt(i));
+                while (above.Count > 2 && cww(above.ElementAt(above.Count - 3), above.ElementAt(above.Count - 2), above.ElementAt(above.Count - 1)) <= 0)
                 {
-                    above.Remove(above[above.Count - 2]); // if not left => delete middle
+                    above.Remove(above.ElementAt(above.Count - 2)); // if not left => delete middle
                 }
             }
 
             connect_all_the_points(above);
 
-            below.Add(points[points.Count - 1]);
-            below.Add(points[points.Count - 2]);
+            below.AddLast(sorted_points.ElementAt(sorted_points.Count() - 1));
+            below.AddLast(sorted_points.ElementAt(sorted_points.Count() - 2));
 
             for (int i = points.Count - 3; i >= 0; i--)
             {
-                below.Add(points[i]);
-                while (below.Count > 2 && cww(below[below.Count - 3], below[below.Count - 2], below[below.Count - 1]) <= 0)
+               below.AddLast(sorted_points.ElementAt(i));
+                while (below.Count > 2 && cww(below.ElementAt(below.Count - 3), below.ElementAt(below.Count - 2), below.ElementAt(below.Count - 1)) <= 0)
                 {
-                    below.Remove(below[below.Count - 2]);
+                    below.Remove(below.ElementAt(below.Count - 2));
                 }
             }
 
@@ -102,12 +104,12 @@ namespace CG_ind
 
 
 
-        void connect_all_the_points(List<Point> lp)
+        void connect_all_the_points(LinkedList<Point> lp)
         {
 
             for (int i = 0; i < lp.Count - 1; i++)
             {
-                g.DrawLine(pen, lp[i].X, lp[i].Y, lp[i + 1].X, lp[i + 1].Y);
+                g.DrawLine(pen, lp.ElementAt(i).X, lp.ElementAt(i).Y, lp.ElementAt(i + 1).X, lp.ElementAt(i + 1).Y);
             }
             pictureBox1.Refresh();
         }
@@ -116,7 +118,7 @@ namespace CG_ind
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
             g.DrawEllipse(pen, new Rectangle(e.X,e.Y, 1, 1));
-            points.Add(new Point(e.X, e.Y));
+            points.AddLast(new Point(e.X, e.Y));
             listBox1.Items.Add(new Point(e.X, e.Y));
             pictureBox1.Refresh();
         }
@@ -133,7 +135,7 @@ namespace CG_ind
                     int ry = random.Next((int)numericUpDown2.Value, (int)(pictureBox1.Height - numericUpDown2.Value) );
                     if (!points.Contains(new Point(rx, ry)))
                     {
-                        points.Add(new Point(rx, ry));
+                        points.AddLast(new Point(rx, ry));
                         g.DrawEllipse(pen, new Rectangle(rx, ry, 1, 1));
                         pictureBox1.Refresh();
                         break;
